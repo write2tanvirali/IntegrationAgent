@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Save, Edit, ArrowBack } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Canvas from '../components/Canvas/Canvas';
 import { fetchIntegrationAgent, updateIntegrationAgent } from '../services/api';
 import { IntegrationAgent, Task, ProcessSchedule } from '../types';
@@ -148,7 +146,9 @@ const IntegrationAgentDetailsPage: React.FC = () => {
       {/* Header */}
       <div className="mb-6">
         <Link to="/integrationagents" className="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-2 transition-colors">
-          <ArrowBack fontSize="small" className="mr-1" />
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
           <span className="text-sm">Back to Agents</span>
         </Link>
         
@@ -162,10 +162,15 @@ const IntegrationAgentDetailsPage: React.FC = () => {
               placeholder="Integration Agent Name"
             />
             {!isEditing && (
-              <Edit 
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-indigo-500 transition-colors"
-                fontSize="small"
-              />
+              <svg 
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-indigo-500 transition-colors w-5 h-5"
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
             )}
           </div>
           
@@ -175,7 +180,15 @@ const IntegrationAgentDetailsPage: React.FC = () => {
               onClick={handleSave}
               disabled={isSaving}
             >
-              <Save fontSize="small" className="mr-1" />
+              <svg 
+                className="w-4 h-4 mr-1" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
               <span className="text-sm font-medium">Save</span>
             </button>
           )}

@@ -1,16 +1,15 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
 
 const LogsPage: React.FC = () => {
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
+    <div className="p-4">
+      <h1 className="text-2xl font-semibold text-gray-800 mb-4">
         Logs
-      </Typography>
-      <Typography variant="body1">
+      </h1>
+      <p className="text-gray-600">
         View logs here.
-      </Typography>
-    </Box>
+      </p>
+    </div>
   );
 };
 

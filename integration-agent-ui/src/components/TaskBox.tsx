@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
 
 interface TaskBoxProps {
   taskName: string;
@@ -8,19 +7,12 @@ interface TaskBoxProps {
 
 const TaskBox: React.FC<TaskBoxProps> = ({ taskName, onClick }) => {
   return (
-    <Box
-      sx={{
-        p: 2,
-        bgcolor: 'lightblue',
-        borderRadius: 1,
-        cursor: 'pointer',
-        mb: 2,
-        textAlign: 'center',
-      }}
+    <div
+      className="p-4 bg-blue-200 rounded cursor-pointer mb-4 text-center hover:shadow-task-hover transition-all"
       onClick={onClick}
     >
-      <Typography variant="body1">{taskName}</Typography>
-    </Box>
+      <p className="text-base">{taskName}</p>
+    </div>
   );
 };
 

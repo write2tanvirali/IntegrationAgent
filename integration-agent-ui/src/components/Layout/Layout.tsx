@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, AppBar, Toolbar, Typography, Container, Drawer, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import DashboardPage from '../../pages/DashboardPage';
 import IntegrationAgentsPage from '../../pages/IntegrationAgentsPage';
+import IntegrationAgentDetailsPage from '../../pages/IntegrationAgentDetailsPage';
 import RunningAgentsPage from '../../pages/RunningAgentsPage';
 import UsersPage from '../../pages/UsersPage';
 import LogsPage from '../../pages/LogsPage';
@@ -13,42 +13,62 @@ import NewIntegrationAgentPage from '../../pages/NewIntegrationAgentPage';
 const drawerWidth = 240;
 
 const Layout: React.FC = () => {
+  const location = useLocation();
+  
+  // Check if we're on a page that should have full width (no padding)
+  const isFullWidthPage = location.pathname.includes('/integrationagents/') || 
+                         location.pathname.includes('/newintegrationagent');
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+    <div className="flex h-screen bg-gray-50">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 bg-indigo-700 shadow-md z-50">
+        <div className="px-4 h-16 flex items-center">
+          <img src={require("../../app-icon.png")} alt="Logo" className="h-8 mr-2" />
+          <h1 className="text-white font-medium text-xl">
             Integration Agent
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-        }}
+          </h1>
+        </div>
+      </header>
+      
+      {/* Sidebar */}
+      <nav 
+        className="fixed top-16 left-0 w-60 h-[calc(100vh-4rem)] bg-white shadow-md overflow-y-auto"
+        style={{ width: `${drawerWidth}px` }}
       >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-          <List>
-            {['Dashboard', 'Integration Agents', 'Running Agents', 'Users', 'Logs', 'Settings', 'Logout'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton component={Link} to={`/${text.replace(/ /g, '').toLowerCase()}`}>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        <Container>
+        <ul className="py-2">
+          {[
+            { text: 'Dashboard', path: '/dashboard' },
+            { text: 'Integration Agents', path: '/integrationagents' },
+            { text: 'Running Agents', path: '/runningagents' },
+            { text: 'Users', path: '/users' },
+            { text: 'Logs', path: '/logs' },
+            { text: 'Settings', path: '/settings' },
+            { text: 'Logout', path: '/logout' }
+          ].map((item) => (
+            <li key={item.text}>
+              <Link 
+                to={item.path}
+                className={`block px-4 py-2 text-gray-800 hover:bg-indigo-50 ${
+                  location.pathname === item.path ? 'bg-indigo-100' : ''
+                }`}
+              >
+                {item.text}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      
+      {/* Main Content */}
+      <main 
+        className={`flex-grow ml-60 mt-16 ${isFullWidthPage ? 'p-0' : 'p-4'}`}
+      >
+        <div className={isFullWidthPage ? 'w-full p-0 m-0' : 'max-w-7xl mx-auto'}>
           <Routes>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/integrationagents" element={<IntegrationAgentsPage />} />
+            <Route path="/integrationagents/:id" element={<IntegrationAgentDetailsPage />} />
             <Route path="/runningagents" element={<RunningAgentsPage />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/logs" element={<LogsPage />} />
@@ -56,9 +76,9 @@ const Layout: React.FC = () => {
             <Route path="/logout" element={<LogoutPage />} />
             <Route path="/newintegrationagent" element={<NewIntegrationAgentPage />} />
           </Routes>
-        </Container>
-      </Box>
-    </Box>
+        </div>
+      </main>
+    </div>
   );
 };
 

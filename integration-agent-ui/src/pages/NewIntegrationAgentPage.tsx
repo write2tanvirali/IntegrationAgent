@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Save } from '@mui/icons-material';
+import { useNavigate, Link } from 'react-router-dom';
+import { SaveIcon, ArrowBackIcon } from '../components/Icons';
 import Canvas from '../components/Canvas/Canvas';
 import { createIntegrationAgent } from '../services/api';
 import { Task, ProcessSchedule, Recurrence } from '../types';
-import { Link } from 'react-router-dom';
 
 const NewIntegrationAgentPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,14 +14,16 @@ const NewIntegrationAgentPage: React.FC = () => {
     time: '00:00',
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState('');
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAgentName(event.target.value);
+    setError('');
   };
 
   const handleSave = async () => {
     if (!agentName.trim()) {
-      alert('Please enter a name for the integration agent');
+      setError('Please enter a name for the integration agent');
       return;
     }
 
@@ -44,7 +45,7 @@ const NewIntegrationAgentPage: React.FC = () => {
       navigate(`/integrationagents/${createdAgent.id}`);
     } catch (error) {
       console.error('Failed to create integration agent:', error);
-      alert('Failed to create integration agent. Please try again.');
+      setError('Failed to create integration agent. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -69,49 +70,65 @@ const NewIntegrationAgentPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
-      {/* Simple header section that matches the screenshot */}
-      <div className="mb-4">
-        <Link to="/integrationagents" className="text-purple-700 hover:text-purple-900 mb-2 flex items-center">
-          <span className="mr-1">←</span>
+    <div className="p-6">
+      {/* Header section */}
+      <header className="mb-6">
+        <Link 
+          to="/integrationagents" 
+          className="text-indigo-600 hover:text-indigo-800 mb-4 flex items-center"
+          aria-label="Back to Agents"
+        >
+          <ArrowBackIcon className="mr-1" size="sm" />
           <span>Back to Agents</span>
         </Link>
-      </div>
+      </header>
       
-      <div className="flex flex-col mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-gray-700">Action</span>
+      <div className="flex flex-col mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+          <h1 className="text-2xl font-bold text-gray-800">Create New Integration</h1>
           
           <div className="flex items-center">
-            <input
-              type="text"
-              value={agentName}
-              onChange={handleNameChange}
-              placeholder="Enter Integration Agent Name"
-              className="border p-2 rounded mr-2 w-64"
-            />
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={agentName}
+                onChange={handleNameChange}
+                placeholder="Enter Integration Agent Name"
+                className="form-input mr-2"
+                aria-label="Integration Agent Name"
+                aria-required="true"
+                aria-invalid={!!error}
+              />
+              {error && (
+                <p className="text-red-500 text-xs mt-1 absolute">{error}</p>
+              )}
+            </div>
             
             <button
-              className="bg-gray-200 p-2 rounded"
+              className={`btn-primary flex items-center justify-center ${
+                !agentName.trim() || isSaving 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : ''
+              }`}
               onClick={handleSave}
               disabled={isSaving || !agentName.trim()}
-              title="Save Agent"
+              aria-label="Save Agent"
             >
-              <Save />
+              <SaveIcon className="mr-1" size="sm" />
+              <span>Save</span>
             </button>
           </div>
         </div>
         
-        <div className="mb-2">
-          <h3 className="text-lg font-bold mb-1">Task 1</h3>
+        <div className="mb-4">
           <p className="text-sm text-gray-600">
             Create a new integration agent by configuring the trigger and adding workflow tasks. Design your integration flow from left to right.
           </p>
         </div>
       </div>
       
-      <div className="mb-2">
-        <span className="text-gray-500 text-sm float-right">Workflow Builder</span>
+      <div className="mb-2 text-right">
+        <span className="text-indigo-600 text-sm font-medium">Workflow Builder</span>
       </div>
       
       {/* Canvas Component */}
