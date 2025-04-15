@@ -74,7 +74,7 @@ const TriggerBox: React.FC<TriggerBoxProps> = ({ position, schedule, onUpdate })
           <div className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 animate-fadeIn">
             <TriggerForm
               schedule={schedule}
-              onSubmit={(updatedSchedule: ProcessSchedule) => {
+              onSave={(updatedSchedule: ProcessSchedule) => {
                 onUpdate?.(updatedSchedule);
                 setIsEditing(false);
               }}

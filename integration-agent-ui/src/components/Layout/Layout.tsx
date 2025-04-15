@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import DashboardPage from '../../pages/DashboardPage';
-import IntegrationAgentsPage from '../../pages/IntegrationAgentsPage';
+import IntegrationAgentsListPage from '../../pages/IntegrationAgentsListPage';
 import IntegrationAgentDetailsPage from '../../pages/IntegrationAgentDetailsPage';
 import RunningAgentsPage from '../../pages/RunningAgentsPage';
 import UsersPage from '../../pages/UsersPage';
@@ -67,7 +67,7 @@ const Layout: React.FC = () => {
         <div className={isFullWidthPage ? 'w-full p-0 m-0' : 'max-w-7xl mx-auto'}>
           <Routes>
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/integrationagents" element={<IntegrationAgentsPage />} />
+            <Route path="/integrationagents" element={<IntegrationAgentsListPage />} />
             <Route path="/integrationagents/:id" element={<IntegrationAgentDetailsPage />} />
             <Route path="/runningagents" element={<RunningAgentsPage />} />
             <Route path="/users" element={<UsersPage />} />
